@@ -7,16 +7,15 @@ text protocols, such as HTTP, NNTP, SMTP, and MIME.
 ```hdrx
 title: Example Document
 created: 2024-01-26
-synposis: {
-  This is an example document showcasing some features of the hdrx format.
-}
+synposis: Example document showcasing the hdrx format.
 author {
   name: Brandon Bloom
   github: https://github.com/brandonbloom/
 }
 
-Headers documents are reminiscent of an HTTP response, but with some convenient
-features such as multi-line values and support for nesting in values.
+Headers documents are reminiscent of an HTTP response,
+but with some convenient features such as multi-line
+values and support for nesting in values.
 ```
 
 ## Format Specification
