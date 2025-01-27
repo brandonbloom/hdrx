@@ -30,12 +30,20 @@ content is present, a single blank line separates it from the headers section.
 file  ::=  headers (LF content)?
 ```
 
+Note that both headers and content are optional, and so the format permits
+headers without content, content without headers, and completely emtpy files.
+
+In the case of headerless content, a `# No Headers.` comment is conventional.
+
+Headers are encoded in UTF-8, but the content section is an arbitrary octet
+stream.
+
 ### Keys and Headers
 
 Each header in the headers section begins with a key and is terminated by a
 newline.  Headers are composed of a key, separator, and value.
 
-Keys begin with an ascii letters and may contain decimal digits, ascii letters,
+Keys begin with an ascii letter and may contain decimal digits, ascii letters,
 and the hyphen (`-`) character. Keys may not end with a hyphen. All other
 characters are reserved for future use; as the format stablizes, the set of
 allowed characters will be expanded.
@@ -98,11 +106,24 @@ example above, `function` is preceeded by a two-space indent, which is also
 trimmed of each of the subsequent lines. If the prefix does not match exactly,
 it is preserved literally; implementations may emit a warning.
 
-Block headers end with a closing bracket on their own, otherwise-blank line.
-Any extra content on the line should be abort parsing with an error.
+Block headers end with one or more closing brackets on a single,
+otherwise-blank line.  This line may be the same line that begun the header,
+and so an inline, empty block is valid. Any other content on the line should
+abort parsing with an error.
 
 Blank lines are allowed within braces and do not signal the separation between
 headers and content.
+
+#### Escaping
+
+The tilde (`~`) character is used to escape curly braces, allowing for
+unbalanced braces. `~{` and `~}` produce literal `{` and `}` respectively.
+A tilde preceeding any other character is not treated specially and does
+not need to be escaped.
+
+To produce a literal `~{` or `~}`, the tilde character can be repeated. This
+escaping rule works for any number of tildes, escaping one fewer tildes and
+the subsequent bracket.
 
 ### Whitespace
 
@@ -129,6 +150,15 @@ preceeded by a file extension for the content format. For example
 
 Implementations should treat keys as case-preserving, but compare them
 case-insensitively. Case may be normalized via lowercasing.
+
+Casing within values should be preserved, delegating case sensitivity to
+whatever format the value happens to be encoded with.
+
+### Header Ordering
+
+General hdrx processing tools should preserve the presence and ordering of
+headers. Duplicate header heys are syntacticaly valid. The semantic meaning
+of header order or duplicate keys is application-specific.
 
 ### Value Handling
 
