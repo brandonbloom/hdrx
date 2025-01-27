@@ -74,7 +74,7 @@ Values are octet streams containing more-or-less arbitrary content. However,
 they adhere to three special rules pertaining to:
 
 1. line terminators
-2. nested brackets (`{`, `[`, `(`, `)`, `]`
+2. nested brackets (`{` and `}`)
 3. and leading whitespace
 
 In the absence of brackets, a value is terminated by a newline.  In the
