@@ -7,7 +7,7 @@ text protocols, such as HTTP, NNTP, SMTP, and MIME.
 ```hdrx
 title: Example Document
 created: 2024-01-26
-synposis: Example document showcasing the hdrx format.
+synopsis: Example document showcasing the hdrx format.
 author {
   name: Brandon Bloom
   github: https://github.com/brandonbloom/
@@ -17,6 +17,10 @@ Headers documents are reminiscent of an HTTP response,
 but with some convenient features such as multi-line
 values and support for nesting in values.
 ```
+
+## Status
+
+This is an early draft. Expect it to change.
 
 ## Format Specification
 
@@ -30,7 +34,7 @@ file  ::=  headers (LF content)?
 ```
 
 Note that both headers and content are optional, and so the format permits
-headers without content, content without headers, and completely emtpy files.
+headers without content, content without headers, and completely empty files.
 
 In the case of headerless content, a `# No Headers.` comment is conventional.
 
@@ -136,6 +140,19 @@ Windows-style `CR LN` are harmless because of trimming rules.
 Trimming removes leading and trailing whitespace.
 
 A blank line is one that is empty after trimming whitespace.
+
+### Comments
+
+Lines whose first non-whitespace character is a hash sign (`#`) are comments.
+Comments are newline terminated, but may also contain nested brackets spanning
+multiple lines.
+
+```hdrx
+#skipped: line
+#skipped-block {
+  This contnet
+}
+```
 
 ## Conventions
 
