@@ -8,25 +8,22 @@ import (
 )
 
 func TestEncoder(t *testing.T) {
-	type header struct {
-		key, value string
-	}
 	type test struct {
 		name    string
-		headers []header
+		input   Headers
 		encoded []string
 		err     error
 	}
 	tests := []test{
 		{
 			"empty",
-			[]header{},
+			Headers{},
 			[]string{},
 			nil,
 		},
 		{
 			"simple",
-			[]header{
+			Headers{
 				{"key", "value"},
 			},
 			[]string{
@@ -36,7 +33,7 @@ func TestEncoder(t *testing.T) {
 		},
 		{
 			"trimming",
-			[]header{
+			Headers{
 				{"key", "   trimmed    "},
 			},
 			[]string{
@@ -46,7 +43,7 @@ func TestEncoder(t *testing.T) {
 		},
 		{
 			"multi-line",
-			[]header{
+			Headers{
 				{"key", "line 1\nline 2"},
 			},
 			[]string{
@@ -64,14 +61,14 @@ func TestEncoder(t *testing.T) {
 			var err error
 			var sb strings.Builder
 			enc := NewEncoder(&sb)
-			for _, header := range test.headers {
-				err = enc.WriteHeader(header.key, header.value)
+			for _, header := range test.input {
+				err = enc.WriteHeader(header.Key, header.Value)
 			}
 			if test.err != nil {
 				panic("todo: error tests")
 			}
 			if err != nil {
-				t.Errorf("unexpected error: %v", err)
+				t.Fatalf("unexpected error: %v", err)
 			}
 			actual := sb.String()
 			expected := strings.Join(test.encoded, "\n")
